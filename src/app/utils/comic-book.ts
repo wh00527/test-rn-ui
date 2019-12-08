@@ -1,0 +1,5 @@
+const DISPLAY_RESULT_COUNT_WHILE_TYPING = 3;
+const DISPLAY_RESULT_COUNT_NOT_TYPING = 10;
+
+export const getDisplayResultCount = (isTyping: boolean) =>
+    isTyping ? DISPLAY_RESULT_COUNT_WHILE_TYPING : DISPLAY_RESULT_COUNT_NOT_TYPING;

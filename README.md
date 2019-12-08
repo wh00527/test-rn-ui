@@ -19,3 +19,7 @@
 ## Run
 
 * To run on iOS Simulator: `npx react-native run-ios`
+
+## Test
+
+* To run test cases: `npm run test`

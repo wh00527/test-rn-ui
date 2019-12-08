@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { ComicBook } from '../../models/comic-book';
+import { ComicBook } from '../models/comic-book';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export interface Props {

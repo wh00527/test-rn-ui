@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text, StyleSheet, GestureResponderEvent } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import { ComicBook } from '../../models/comic-book';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export interface Props {
     book: ComicBook;
-    // onPress: (event: GestureResponderEvent) => void;
+    onPress: () => void;
 }
 
 export class SearchResult extends React.Component<Props> {
@@ -15,14 +15,14 @@ export class SearchResult extends React.Component<Props> {
 
     render() {
         return (
-            <TouchableOpacity style={style.resultBox} onPress={(e) => console.log(e)}>
+            <TouchableOpacity style={styles.resultBox} onPress={this.props.onPress}>
                 <Text>{this.props.book.title}</Text>
             </TouchableOpacity>
         );
     }
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
     resultBox: {
         borderBottomWidth: 1,
         borderBottomColor: '#dddddd',

@@ -4,11 +4,12 @@ import { search } from '../../apis/comic-book';
 import { ComicBook } from '../../models/comic-book';
 import { SearchResult } from './search-result';
 import { getDisplayResultCount } from '../../utils/comic-book';
+import { NavigationStackProp } from 'react-navigation-stack';
 
 const MIN_SEARCHABLE_TEXT_LENGTH = 3;
 
 export interface Props {
-
+    navigation: NavigationStackProp;
 }
 
 interface State {
@@ -51,11 +52,15 @@ export class Search extends React.Component<Props, State> {
         await this.updateSearchResults(this.state && this.state.text);
     };
 
-    renderSearchResults = () => this.state && this.state.books && this.state.books.map(book => (
-        <SearchResult
-            key={book.diamond_id}
-            book={book} />
-    ));
+    renderSearchResults = () => {
+        const { navigate } = this.props.navigation;
+        return this.state && this.state.books && this.state.books.map(book => (
+            <SearchResult
+                key={book.diamond_id}
+                book={book}
+                onPress={() => navigate('Detail', { book })} />
+        ));
+    };
 
     render() {
         return (

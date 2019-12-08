@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, TextInput, ScrollView } from 'react-native';
 import { search } from '../../apis/comic-book';
 import { ComicBook } from '../../models/comic-book';
@@ -12,49 +12,30 @@ export interface Props {
     navigation: NavigationStackProp;
 }
 
-interface State {
-    text: string;
-    books: ComicBook[],
-    isTyping: boolean;
-}
+export default function Search(props: Props) {
+    const [text, setText] = useState('');
+    const [books, setBooks] = useState([] as ComicBook[]);
 
-export class Search extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-    }
-
-    static navigationOptions = {
-        title: 'Search',
-    };
-
-    componentDidMount() {
-        this.setState({ isTyping: false });
-    }
-
-    updateSearchResults = async (text: string): Promise<void> => {
-        let books: ComicBook[] = [];
-        if (!!text && text.length >= MIN_SEARCHABLE_TEXT_LENGTH) {
-            const results = await search(text);
-            books = results && results.slice(0, getDisplayResultCount(this.state && this.state.isTyping));
+    const updateSearchResults = async (text: string, isTyping: boolean): Promise<void> => {
+        if (!text || text.length < MIN_SEARCHABLE_TEXT_LENGTH) {
+            return;
         }
-        this.setState({ books });
+        const results = await search(text);
+        setBooks(results && results.slice(0, getDisplayResultCount(isTyping)));
     };
 
-    onSearchTextChanged = async (text: string): Promise<void> => {
-        this.setState({ text });
-        await this.updateSearchResults(text);
+    const onSearchTextChanged = async (text: string): Promise<void> => {
+        setText(text);
+        await updateSearchResults(text, true);
     };
 
-    toggleTypingMode = (isTyping: boolean): void => this.setState({ isTyping });
-
-    onSubmitSearch = async (): Promise<void> => {
-        this.toggleTypingMode(false);
-        await this.updateSearchResults(this.state && this.state.text);
+    const onSubmitSearch = async (): Promise<void> => {
+        await updateSearchResults(text, false);
     };
 
-    renderSearchResults = () => {
-        const { navigate } = this.props.navigation;
-        return this.state && this.state.books && this.state.books.map(book => (
+    const renderSearchResults = (books: ComicBook[]) => {
+        const { navigate } = props.navigation;
+        return books && books.map(book => (
             <SearchResult
                 key={book.diamond_id}
                 book={book}
@@ -62,22 +43,21 @@ export class Search extends React.Component<Props, State> {
         ));
     };
 
-    render() {
-        return (
-            <View>
-                <TextInput
-                    style={styles.searchBar}
-                    placeholder="Search..."
-                    onChangeText={this.onSearchTextChanged}
-                    onFocus={() => this.toggleTypingMode(true)}
-                    onSubmitEditing={this.onSubmitSearch} />
-                <ScrollView style={styles.searchResult}>
-                    {this.renderSearchResults()}
-                </ScrollView>
-            </View>
-        );
-    }
+    return (
+        <View>
+            <TextInput
+                style={styles.searchBar}
+                placeholder="Search..."
+                onChangeText={onSearchTextChanged}
+                onSubmitEditing={onSubmitSearch} />
+            <ScrollView style={styles.searchResult}>
+                {renderSearchResults(books)}
+            </ScrollView>
+        </View>
+    );
 }
+
+Search.navigationOptions = { title: 'Search' };
 
 const styles = StyleSheet.create({
     searchBar: {

@@ -6,7 +6,7 @@
  * @flow
  */
 import { createStackNavigator } from 'react-navigation-stack';
-import { Search } from './src/app/components/search/search';
+import Search from './src/app/components/search/search';
 import Detail from './src/app/components/detail/detail';
 import { createAppContainer } from 'react-navigation';
 

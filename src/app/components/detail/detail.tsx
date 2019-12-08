@@ -8,45 +8,40 @@ export interface Props {
     navigation: NavigationStackProp;
 }
 
-export class Detail extends React.Component<Props> {
-    constructor(props: Props) {
-        super(props);
-    }
+export default function Detail(props: Props) {
+    const book = props.navigation.getParam('book') as ComicBook;
 
-    static navigationOptions = (options: { navigation: NavigationStackProp }) => {
-        return {
-            title: options.navigation.getParam('book').title,
-        };
-    };
-
-    render() {
-        const book = this.props.navigation.getParam('book') as ComicBook;
-        return (
-            <ScrollView style={styles.page}>
-                <View style={styles.section}>
-                    <Text style={styles.title}>{book.title}</Text>
+    return (
+        <ScrollView style={styles.page}>
+            <View style={styles.section}>
+                <Text style={styles.title}>{book.title}</Text>
+            </View>
+            <View style={styles.section}>
+                <Text>{book.description}</Text>
+            </View>
+            <View style={styles.section}>
+                <View style={styles.metaSection}>
+                    <Text style={styles.metaKey}>Price</Text>
+                    <Text>{book.price}</Text>
                 </View>
-                <View style={styles.section}>
-                    <Text>{book.description}</Text>
+                <View style={styles.metaSection}>
+                    <Text style={styles.metaKey}>Publisher</Text>
+                    <Text>{book.publisher}</Text>
                 </View>
-                <View style={styles.section}>
-                    <View style={styles.metaSection}>
-                        <Text style={styles.metaKey}>Price</Text>
-                        <Text>{book.price}</Text>
-                    </View>
-                    <View style={styles.metaSection}>
-                        <Text style={styles.metaKey}>Publisher</Text>
-                        <Text>{book.publisher}</Text>
-                    </View>
-                    <View style={styles.metaSection}>
-                        <Text style={styles.metaKey}>Release Date</Text>
-                        <Text>{formatDate(book.release_date)}</Text>
-                    </View>
+                <View style={styles.metaSection}>
+                    <Text style={styles.metaKey}>Release Date</Text>
+                    <Text>{formatDate(book.release_date)}</Text>
                 </View>
-            </ScrollView>
-        )
-    }
+            </View>
+        </ScrollView>
+    );
 }
+
+Detail.navigationOptions = (options: { navigation: NavigationStackProp }) => {
+    return {
+        title: options.navigation.getParam('book').title,
+    };
+};
 
 const styles = StyleSheet.create({
     page: {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { ComicBook } from '../../models/comic-book';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -8,18 +8,12 @@ export interface Props {
     onPress: () => void;
 }
 
-export class SearchResult extends React.Component<Props> {
-    constructor(props: Props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <TouchableOpacity style={styles.resultBox} onPress={this.props.onPress}>
-                <Text>{this.props.book.title}</Text>
-            </TouchableOpacity>
-        );
-    }
+export default function SearchResult(props: Props) {
+    return (
+        <TouchableOpacity style={styles.resultBox} onPress={props.onPress}>
+            <Text>{props.book.title}</Text>
+        </TouchableOpacity>
+    );
 }
 
 const styles = StyleSheet.create({

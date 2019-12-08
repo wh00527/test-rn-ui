@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, TextInput, ScrollView } from 'react-native';
 import { search } from '../../apis/comic-book';
 import { ComicBook } from '../../models/comic-book';
-import { SearchResult } from './search-result';
+import SearchResult from './search-result';
 import { getDisplayResultCount } from '../../utils/comic-book';
 import { NavigationStackProp } from 'react-navigation-stack';
 
